@@ -1,12 +1,13 @@
 #include <iostream>
 #include "string"
+#include "iomanip"
 #define MAX 1000
 
 using namespace std;
 
 struct  Person
 {
-    int     m_Sex;
+    int    m_Sex;
     int    m_Age;
     string m_Name;
     string m_Phone;
@@ -22,6 +23,55 @@ struct  Addressbooks
     int m_Size;
 };
 
+void addPerson  (Addressbooks *abs);
+void showPerson (Addressbooks *abs);
+void showMenu  ( );
+
+int main ()
+{
+    int select =0;
+   //创建一个通讯录的结构体变量
+   Addressbooks abs;
+   abs.m_Size=0;//初始化通讯录中的结构体
+   
+   while (1)
+    { 
+        showMenu();
+        cin >>select;
+        switch (select)
+        {
+        case 1:
+        addPerson(&abs);
+            break;
+        case 2:
+        showPerson(&abs);
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        case 5:
+
+            break;
+        case 0:
+            cout<<"退出成功,欢迎下次使用......"<<endl;
+            system("pause");
+            return 0;
+
+        default:
+
+        cout<<"输入有误，请重新输入;"<<endl;
+        
+        cin>>select;
+            break;
+        }
+    }
+    system("pause");
+    return 0;
+
+}
 void showMenu()
 {
     cout<<"**************************"<<endl;
@@ -33,8 +83,29 @@ void showMenu()
     cout<<"*****  0.退出联系人  *****"<<endl;
     cout<<"**************************"<<endl;
 }
-
-void addPerson (Addressbooks *abs)
+void showPerson (Addressbooks *abs)
+{
+    if (abs->m_Size==0)
+    {
+        cout<<"当前通讯录为空."<<endl;
+        system("pause");
+        system("cls");
+    }
+    else
+    {
+       system("cls");
+       cout<<left << setw(8)<<"姓名"<< setw(8)<<"性别"<< setw(8)<<"年龄"<< setw(15)<<"电话号码"<< setw(20)<<"家庭地址"<<endl;
+       for ( int i = 0; i < abs->m_Size; i++)
+       {
+        string str;
+        abs->personArray->m_Sex? str="女":str="男";
+        cout<<left << setw(8)<<abs->personArray->m_Name<< setw(8)<<str<< setw(8)<<abs->personArray->m_Age<< setw(15)<<abs->personArray->m_Phone<< setw(20)<<abs->personArray->m_Addr<<endl;
+       }       
+        system("pause");
+        system("cls");
+    }
+}
+void addPerson  (Addressbooks *abs)
 {
     //判断通讯录是否已满，软管满了就不再添加
     if (abs->m_Size==MAX)
@@ -50,6 +121,7 @@ void addPerson (Addressbooks *abs)
         abs->personArray[abs->m_Size].m_Name=Person_input.m_Name;
 
         cout<<"请输入性别(0/1):"<<endl;
+        cout<<"0---男   1---女"<<endl;
         cin>>Person_input.m_Sex;
         while (1)
         {
@@ -60,6 +132,7 @@ void addPerson (Addressbooks *abs)
             else
             cout<<"性别输入有误,请重新输入"<<endl;
             cout<<"请重新输入性别(0/1):"<<endl;
+            cout<<"0---男   1---女"<<endl;
             cin>>Person_input.m_Sex;
         }
         abs->personArray[abs->m_Size].m_Sex=Person_input.m_Sex;
@@ -124,53 +197,6 @@ tiaochu:
         abs->m_Size++;
         cout<<"添加联系人成功;"<<endl;
     }
-}
-
-int main ()
-{
-    int select =0;
-    
-   //创建一个通讯录的结构体变量1
-
-   Addressbooks abs;
-   abs.m_Size=0;
-   //初始化通讯录中的结构体
-   showMenu();
-   cin >>select;
-   while (1)
-    {
-        switch (select)
-        {
-        case 1:
-        addPerson(&abs);
-        showMenu();
-            break;
-        case 2:
-
-            break;
-        case 3:
-
-            break;
-        case 4:
-
-            break;
-        case 5:
-
-            break;
-        case 0:
-            cout<<"退出成功,欢迎下次使用......"<<endl;
-            system("pause");
-            return 0;
-
-        default:
-
-        cout<<"输入有误，请重新输入;"<<endl;
-        
-        cin>>select;
-            break;
-        }
-    }
-    system("pause");
-    return 0;
-
+    system ("pause");
+    system ("cls");
 }
