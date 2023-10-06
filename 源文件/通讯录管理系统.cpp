@@ -25,6 +25,11 @@ struct  Addressbooks
 
 void addPerson  (Addressbooks *abs);
 void showPerson (Addressbooks *abs);
+void findPerson (Addressbooks *abs);
+void deletePerson (Addressbooks *abs);
+void newPerson (Addressbooks *abs,int num);
+
+int isExist (Addressbooks *abs,string name);
 void showMenu  ( );
 
 int main ()
@@ -45,13 +50,14 @@ int main ()
             break;
         case 2:
         showPerson(&abs);
-            break;
+            break; 
         case 3:
-
+        deletePerson(&abs);
             break;
         case 4:
-
+        findPerson(&abs);
             break;
+
         case 5:
 
             break;
@@ -82,7 +88,7 @@ void showMenu()
     cout<<"*****  5.清空联系人  *****"<<endl;
     cout<<"*****  0.退出联系人  *****"<<endl;
     cout<<"**************************"<<endl;
-}
+} 
 void showPerson (Addressbooks *abs)
 {
     if (abs->m_Size==0)
@@ -94,19 +100,90 @@ void showPerson (Addressbooks *abs)
     else
     {
        system("cls");
-       cout<<left << setw(8)<<"姓名"<< setw(8)<<"性别"<< setw(8)<<"年龄"<< setw(15)<<"电话号码"<< setw(20)<<"家庭地址"<<endl;
+       cout<<left <<setw(8)<<"序号"<< setw(8)<<"姓名"<< setw(8)<<"性别"<< setw(8)<<"年龄"<< setw(15)<<"电话号码"<< setw(20)<<"家庭地址"<<endl;
        for ( int i = 0; i < abs->m_Size; i++)
        {
         string str;
         abs->personArray->m_Sex? str="女":str="男";
-        cout<<left << setw(8)<<abs->personArray->m_Name<< setw(8)<<str<< setw(8)<<abs->personArray->m_Age<< setw(15)<<abs->personArray->m_Phone<< setw(20)<<abs->personArray->m_Addr<<endl;
+        cout<<left <<setw(8)<<i<< setw(8)<<abs->personArray->m_Name<< setw(8)<<str<< setw(8)<<abs->personArray->m_Age<< setw(15)<<abs->personArray->m_Phone<< setw(20)<<abs->personArray->m_Addr<<endl;
        }       
         system("pause");
         system("cls");
     }
 }
-void addPerson  (Addressbooks *abs)
+void deletePerson (Addressbooks *abs)
 {
+    string name;
+    cout<<"请输入需要删除联系人的姓名:"<<endl;
+    cin>>name;
+    int num =isExist(abs,name);
+    if(num==-1)
+    {
+        cout<<"查无此人！"<<endl;
+        system("pause");
+        system("cls");
+    }    
+    else
+    {
+        system("cls");
+        string str;
+        cout<<"请问是否要删除联系人:"<<name<<"(YES/NO)"<<endl;
+        while (1)
+        {       
+            string Deter;
+            cin>>Deter;
+            for (int i=0; i <Deter.size(); i++)  Deter[i] = toupper(Deter[i]); //转换为大写字母
+            
+            if(Deter=="YES"||Deter=="Y") 
+            { 
+                newPerson (abs,num);
+                cout<<"联系人  "<<name<<"  删除成功"<<endl;
+                system("pause");
+                system("cls");
+                break;
+            }
+            else if(Deter=="NO"||Deter=="N")
+            {
+                system("pause");
+                system("cls");
+                break;
+            }
+            else
+            {
+                cout<<"输入有误！请重新输入;"<<endl;
+            }
+        }   
+       
+    }
+}
+void findPerson (Addressbooks *abs)
+{
+        string name;
+        cout<<"请输入需要查找联系人的姓名:"<<endl;
+        cin>>name;
+        if(isExist(abs,name)==-1)
+        {
+             cout<<"查无此人！"<<endl;
+        }    
+}
+int isExist (Addressbooks *abs,string name)  //检测输入的姓名是否存在
+{
+    for (int i = 0; i < abs->m_Size; i++)
+    {
+        if(abs->personArray->m_Name==name) 
+        {
+            system("cls");
+            string str;
+            abs->personArray->m_Sex? str="女":str="男";
+            cout<<left <<setw(8)<<"序号"<< setw(8)<<"姓名"<< setw(8)<<"性别"<< setw(8)<<"年龄"<< setw(15)<<"电话号码"<< setw(20)<<"家庭地址"<<endl;
+            cout<<left <<setw(8)<<i<< setw(8)<<abs->personArray->m_Name<< setw(8)<<str<< setw(8)<<abs->personArray->m_Age<< setw(15)<<abs->personArray->m_Phone<< setw(20)<<abs->personArray->m_Addr<<endl;
+            system("pause");
+            return i;
+        }
+    }
+    return -1;
+}
+void addPerson  (Addressbooks *abs){
     //判断通讯录是否已满，软管满了就不再添加
     if (abs->m_Size==MAX)
     {
@@ -199,4 +276,14 @@ tiaochu:
     }
     system ("pause");
     system ("cls");
+}
+void newPerson (Addressbooks *abs,int num)  //删除人员之后，将重新排序
+{
+    for (int i = num; i < abs->m_Size; i++)
+    {
+        abs->personArray[i]=abs->personArray[i+1];
+        //abs->personArray[abs->m_Size]=nup;
+     }
+     abs->m_Size--;
+    
 }
